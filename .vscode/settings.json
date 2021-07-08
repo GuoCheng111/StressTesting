@@ -1,0 +1,66 @@
+{
+	"files.exclude": {
+		"**/node_modules": true
+	},
+	"editor.snippetSuggestions": "top",
+	"editor.fontSize": 18,
+	"editor.fontLigatures": true,
+	"window.zoomLevel": 0,
+	"window.menuBarVisibility": "default",
+	"workbench.tree.indent": 20,
+	"editor.formatOnType": true,
+	"editor.formatOnSave": true,
+	"editor.tabSize": 4,
+	"editor.codeActionsOnSave": {
+		// For ESLint
+		"source.fixAll.eslint": true,
+		// For TSLint
+		"source.fixAll.tslint": true,
+		// For Stylelint
+		"source.fixAll.stylelint": true
+	},
+	"javascript.format.insertSpaceBeforeFunctionParenthesis": false,
+	"eslint.autoFixOnSave": true,
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact",
+		{
+			"language": "vue",
+			"autoFix": true
+		}
+	],
+	//"prettier.tabWidth": 4,
+	"prettier.useTabs": true,
+	//  #让prettier使用eslint的代码格式进行校验
+	//"prettier.eslintIntegration": true,
+	//  #去掉代码结尾的分号
+	"prettier.semi": true,
+	//  #使用带引号替代双引号
+	"prettier.singleQuote": true,
+	"prettier.jsxSingleQuote": true,
+	"prettier.printWidth": 160,
+	"prettier.jsxBracketSameLine": true,
+	/* "vetur.format.defaultFormatter.html": "js-beautify-html",
+            "vetur.format.defaultFormatter.js": "prettier-eslint", */
+	"vetur.format.options.tabSize": 4,
+	"vetur.format.defaultFormatterOptions": {
+		"prettier": {
+			"semi": true, // 使用分号
+			"singleQuote": true // 使用单引号
+		}
+	},
+	"vetur.validation.template": false,
+	"explorer.confirmDelete": false,
+	"[vue]": {
+		"editor.defaultFormatter": "octref.vetur"
+	},
+	"editor.suggestSelection": "first",
+	"vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+	"files.associations": {
+		"*.js": "javascriptreact"
+	},
+	"files.eol": "\n",
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	}
+}
