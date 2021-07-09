@@ -8,7 +8,7 @@ var config = require('./config');
 
 console.log('config:', config);
 
-const timeStampFile = moment(Date.now()).format('YYYY-MM-DD_HH:mm:ss');
+const timeStampFile = moment(Date.now()).format('YYYY-MM-DD_HH-mm-ss');
 
 //相关shell脚本命令
 const shellStartPackage = `adb shell am start ${config.packageName}/.MainActivity`;
@@ -19,6 +19,9 @@ var xAxisData = [];
 var dalvikData = [];
 var nativeData = [];
 var totalData = [];
+var maxDalvik = 0;
+var maxNative = 0;
+var maxTotal = 0;
 
 const execute = async command => {
 	console.log('command:', command);
@@ -36,10 +39,12 @@ const execute = async command => {
 };
 
 const saveToImage = (imageWidth, imageHeight, imageName) => {
+	endTime = moment(Date.now()).format('YYYY-MM-DD_HH:mm:ss');
+
 	let option = {
 		backgroundColor: 'rgba(0,0,0,0)',
 		title: {
-			text: startTime + '---' + endTime,
+			text: startTime + '---' + endTime + '\r\n' + `maxDalvik:${maxDalvik}` + '\r\n' + `maxNative:${maxNative}` + '\r\n' + `maxTotal:${maxTotal}`,
 			textStyle: {
 				color: 'rgba(170, 29, 29, 1)'
 			}
@@ -68,19 +73,16 @@ const saveToImage = (imageWidth, imageHeight, imageName) => {
 			{
 				name: 'Dalvik',
 				type: 'line',
-				stack: '总量',
 				data: dalvikData
 			},
 			{
 				name: 'Native',
 				type: 'line',
-				stack: '总量',
 				data: nativeData
 			},
 			{
 				name: 'Total',
 				type: 'line',
-				stack: '总量',
 				data: totalData
 			}
 		]
@@ -130,6 +132,9 @@ const recordData = async () => {
 	dalvikData.push(spt[0]);
 	nativeData.push(spt[1]);
 	totalData.push(spt[2]);
+	if (spt[0] > maxDalvik) maxDalvik = spt[0];
+	if (spt[1] > maxNative) maxNative = spt[1];
+	if (spt[2] > maxTotal) maxTotal = spt[2];
 };
 
 //检查配置文件
@@ -212,10 +217,21 @@ var main = async () => {
 		await recordData();
 	}
 
-	//end
-	endTime = moment(Date.now()).format('YYYY-MM-DD_HH:mm:ss');
+	if (config.tranquility) {
+		start = getNowSceond();
+		while (getNowSceond() - start <= config.tranquility) {
+			let ret = await checkUpPackage();
+			if (!ret) break;
 
-	saveToImage(1280, 720, 'image.png');
+			sleep(config.waitingTime);
+
+			await recordData();
+		}
+	}
+
+	//end
+
+	saveToImage(1280, 720, `image${startTime}.png`);
 };
 
 main();
